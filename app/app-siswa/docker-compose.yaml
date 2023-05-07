@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+
+  mysql_express_data:
+    image: mysql:latest
+    container_name: mysql_express_data
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - network_app_siswa
+
+  app_siswa:
+    container_name: app_siswa
+    restart: always
+    build:
+      context: "./app"
+      dockerfile: Dockerfile
+    image: "app-node:1.0.0"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql_express_data
+
+networks:
+  network_app_siswa:
+    name: network_app_siswa
+    driver: bridge
